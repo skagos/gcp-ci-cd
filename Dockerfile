@@ -4,4 +4,4 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # copy your html
-COPY index.html /usr/share/nginx/html/index.html
+COPY app/index.html /usr/share/nginx/html/index.html
