@@ -8,7 +8,7 @@ This project demonstrates a complete CI/CD pipeline for deploying a simple web a
 - **Containerization**: Docker for application packaging
 - **Automation**: GitHub Actions for CI/CD
 - **Registry**: Docker Hub for image storage
-- **Deployment**: Watchtower for automatic updates on the VM
+- **Deployment**: Cron Script for automatic updates on the VM 
 - **Domain**: Connecting VM public IP to a custom domain
 
 ## Prerequisites
@@ -208,12 +208,8 @@ This project demonstrates a complete CI/CD pipeline for deploying a simple web a
 
 5. **Access App**: Visit `http://VM_EXTERNAL_IP` in browser.
 
-### Step 6: Set Up Watchtower for Automation
+### Step 6: Set Up Cron Script for Automation
 
-1. **Run Watchtower on VM**:
-   ```bash
-   docker run -d --name watchtower -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower yourusername/your-app-name --interval 30
-   ```
 
 2. **Create Update Script** (`~/scripts/update_container.sh`):
    ```bash
@@ -240,10 +236,15 @@ This project demonstrates a complete CI/CD pipeline for deploying a simple web a
    chmod +x ~/scripts/update_container.sh
    ```
 
-4. **Set Up Cron Job** (optional alternative to Watchtower):
+4. **Set Up Cron Job** (optional alternative is Watchtower):
    ```bash
    crontab -e
-   # Add: */30 * * * * /home/YOUR_USERNAME/scripts/update_container.sh >> /home/YOUR_USERNAME/scripts/update.log 2>&1
+   # Add: * * * * * /home/johnskagos/scripts/update_container.sh >> /home/johnskagos/scripts/update.log 2>&1
+   ```
+
+5. **Check Logs**:
+   ```bash
+   cat ~/scripts/update.log
    ```
 
 ### Step 7: Connect VM Public IP to Domain
@@ -265,7 +266,7 @@ This project demonstrates a complete CI/CD pipeline for deploying a simple web a
 1. Make changes to your app code.
 2. Commit and tag a new version: `git tag v1.0.1 && git push origin v1.0.1`
 3. GitHub Actions will build and push the Docker image.
-4. Watchtower will automatically pull and deploy the new image on your VM.
+4. Cron Script or Watchtower will automatically pull and deploy the new image on your VM.
 
 ## Troubleshooting
 
@@ -287,6 +288,6 @@ This project covers:
 - Infrastructure as Code with Terraform
 - Containerization with Docker
 - CI/CD with GitHub Actions
-- Automated deployment with Watchtower
+- Automated deployment with Watchtower or Cron Script
 - Cloud resource management on GCP
 - Domain configuration
